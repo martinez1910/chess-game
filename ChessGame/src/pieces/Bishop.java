@@ -10,7 +10,7 @@ public class Bishop extends Piece{
 	}
 
 	@Override
-	boolean isNewPositionValid(int[] newPosition) {
+	boolean isNewPositionValid(int[] newPosition, Piece[][] piecesBoard) {
 		// TODO Auto-generated method stub
 		return false;
 	}

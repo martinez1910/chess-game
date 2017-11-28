@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import exceptions.InvalidMovementException;
 import exceptions.NoPieceException;
 import exceptions.PositionOutOfTheBoardException;
 import pieces.Board;
@@ -15,7 +16,7 @@ public class Main {
 		System.out.println("# CHESS #");
 		System.out.println("#########");
 		System.out.println("\nPress ENTER to play the game.");
-		readLine();
+		//readLine();
 		
 		Board board = new Board();
 		
@@ -24,7 +25,7 @@ public class Main {
 			String str = readLine();
 			try {
 				board.movePiece(str);
-			} catch (PositionOutOfTheBoardException | NoPieceException e) {
+			} catch (PositionOutOfTheBoardException | NoPieceException | InvalidMovementException e) {
 				System.out.println(e.getMessage());
 			}
 			board.print();

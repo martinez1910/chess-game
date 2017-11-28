@@ -1,5 +1,6 @@
 package pieces;
 
+import exceptions.InvalidMovementException;
 import exceptions.NoPieceException;
 import exceptions.PositionOutOfTheBoardException;
 
@@ -17,10 +18,10 @@ public class Board {
 	}
 	
 	public Board() {
-		System.out.println("Loading Board...");
+		//System.out.println("Loading Board...");
 		this.emptyBoard = createEmptyBoard();
-		print();
-		System.out.println("Loading Pieces...");
+		//print();
+		//System.out.println("Loading Pieces...");
 		this.piecesBoard = createPiecesBoard();
 		print();
 	}
@@ -76,14 +77,14 @@ public class Board {
 		piecesBoard[0][7] = new Rook(false, new int[] {0,7});
 			
 		//Non-pawns White
-		piecesBoard[7][0] = new Rook(false, new int[] {7,0});
-		piecesBoard[7][1] = new Knight(false, new int[] {7,1});
-		piecesBoard[7][2] = new Bishop(false, new int[] {7,2});
-		piecesBoard[7][3] = new Queen(false, new int[] {7,3});
-		piecesBoard[7][4] = new King(false, new int[] {7,4});
-		piecesBoard[7][5] = new Bishop(false, new int[] {7,5});
-		piecesBoard[7][6] = new Knight(false, new int[] {7,6});
-		piecesBoard[7][7] = new Rook(false, new int[] {7,7});
+		piecesBoard[7][0] = new Rook(true, new int[] {7,0});
+		piecesBoard[7][1] = new Knight(true, new int[] {7,1});
+		piecesBoard[7][2] = new Bishop(true, new int[] {7,2});
+		piecesBoard[7][3] = new Queen(true, new int[] {7,3});
+		piecesBoard[7][4] = new King(true, new int[] {7,4});
+		piecesBoard[7][5] = new Bishop(true, new int[] {7,5});
+		piecesBoard[7][6] = new Knight(true, new int[] {7,6});
+		piecesBoard[7][7] = new Rook(true, new int[] {7,7});
 		
 		return piecesBoard;
 	}
@@ -92,7 +93,7 @@ public class Board {
 	
 	
 	//Called from main. "X#X#".Returns if moved
-	public void movePiece(String str) throws PositionOutOfTheBoardException, NoPieceException {
+	public void movePiece(String str) throws PositionOutOfTheBoardException, NoPieceException, InvalidMovementException {
 		//ADD CONTROL LINES TO CHECK STRING IS CORRECT
 		str = str.toLowerCase();
 		int[] pos = translatePos(str.substring(0, 2));
@@ -104,10 +105,12 @@ public class Board {
 		if(piecesBoard[pos[0]][pos[1]] == null)
 			throw new NoPieceException();
 		
-		if(piecesBoard[pos[0]][pos[1]].setPosition(newPos)) {
+		if(piecesBoard[pos[0]][pos[1]].setPosition(newPos, piecesBoard)) {
 			piecesBoard[newPos[0]][newPos[1]] = piecesBoard[pos[0]][pos[1]];
 			piecesBoard[pos[0]][pos[1]] = null;			
 		}
+		else
+			throw new InvalidMovementException();
 	}
 	
 	private int[] translatePos(String str) {

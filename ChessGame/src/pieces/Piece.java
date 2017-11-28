@@ -1,5 +1,7 @@
 package pieces;
 
+import java.util.Arrays;
+
 public abstract class Piece {
 	private boolean isWhite;
 	private int[] position;
@@ -23,13 +25,14 @@ public abstract class Piece {
 		return this.unicodeSymbol;
 	}
 	
-	public boolean setPosition(int[] newPos) {
-		if(isNewPositionValid(newPos)) {
+	public boolean setPosition(int[] newPos, Piece[][] piecesBoard) {
+		if(Arrays.equals(position, newPos)) return false;//same position
+		if(isNewPositionValid(newPos, piecesBoard)) {
 			this.position = newPos;
 			return true;
 		}
 		return false;
 	}
 	
-	abstract boolean isNewPositionValid(int[] newPosition);
+	abstract boolean isNewPositionValid(int[] newPosition, Piece[][] piecesBoard);
 }
