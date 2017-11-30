@@ -18,7 +18,6 @@ public class Bishop extends Piece{
 		
 		if(pieceInNewPosition != null && pieceInNewPosition.isWhite() == this.isWhite())//Piece of same colour in new position
 			return false;
-<<<<<<< HEAD
 
 		return isValidAndPathClear(position, newPosition, piecesBoard);
 	}
@@ -28,51 +27,6 @@ public class Bishop extends Piece{
 		if(!(Math.abs(position[0] - newPosition[0]) == Math.abs(position[1] - newPosition[1]))) //Diagonal (any)
 			return false;
 		
-		int[] pathPosition = position.clone();
-		
-		if(position[0] > newPosition[0] && position[1] > newPosition[1])//up-left diagonal
-			while(pathPosition[0] != newPosition[0] && pathPosition[1] != newPosition[1]) {
-				pathPosition[0]--;
-				pathPosition[1]--;
-				if(Arrays.equals(pathPosition, newPosition)) break;//This can be included inside while's condition but written here for simplicity purposes.
-				if(piecesBoard[pathPosition[0]][pathPosition[1]] != null)
-					return false;
-			}
-		else if(position[0] > newPosition[0] && position[1] < newPosition[1])//up-right diagonal
-			while(pathPosition[0] != newPosition[0] && pathPosition[1] != newPosition[1]) {
-				pathPosition[0]--;
-				pathPosition[1]++;
-				if(Arrays.equals(pathPosition, newPosition)) break;//This can be included inside while's condition but written here for simplicity purposes.
-				if(piecesBoard[pathPosition[0]][pathPosition[1]] != null)
-					return false;
-			}
-		else if(position[0] < newPosition[0] && position[1] > newPosition[1])//down-left diagonal
-			while(pathPosition[0] != newPosition[0] && pathPosition[1] != newPosition[1]) {
-				pathPosition[0]++;
-				pathPosition[1]--;
-				if(Arrays.equals(pathPosition, newPosition)) break;//This can be included inside while's condition but written here for simplicity purposes.
-				if(piecesBoard[pathPosition[0]][pathPosition[1]] != null)
-					return false;
-			}
-		else if(position[0] < newPosition[0] && position[1] < newPosition[1])//down-right diagonal
-			while(pathPosition[0] != newPosition[0] && pathPosition[1] != newPosition[1]) {
-				pathPosition[0]++;
-				pathPosition[1]++;
-				if(Arrays.equals(pathPosition, newPosition)) break;//This can be included inside while's condition but written here for simplicity purposes.
-				if(piecesBoard[pathPosition[0]][pathPosition[1]] != null)
-					return false;
-			}
-		return true;
-=======
-		
-		if(Math.abs(position[0] - newPosition[0]) == Math.abs(position[1] - newPosition[1]) && isPathClear(position, newPosition, piecesBoard))
-			return true;
-		
-		return false;
->>>>>>> branch 'master' of https://github.com/martinez1910/chess-game.git
-	}
-
-	private boolean isPathClear(int[] position, int[] newPosition, Piece[][] piecesBoard) {
 		int[] pathPosition = position.clone();
 		
 		if(position[0] > newPosition[0] && position[1] > newPosition[1])//up-left diagonal

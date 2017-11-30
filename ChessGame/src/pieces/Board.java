@@ -14,11 +14,6 @@ public class Board {
 	private Piece[][] piecesBoard = new Piece[8][8];
 	private boolean isWhitesTurn = true;
 	
-	public static void main(String[] args) {
-		new Board();
-		
-	}
-	
 	public Board() {
 		//System.out.println("Loading Board...");
 		this.emptyBoard = createEmptyBoard();
@@ -104,11 +99,11 @@ public class Board {
 		if(pos == null || newPos == null)
 			throw new PositionOutOfTheBoardException();
 		
-		if(pos != null && ! (piecesBoard[pos[0]][pos[1]].isWhite() == isWhitesTurn))
-			throw new NotYourTurnException();
-		
 		if(piecesBoard[pos[0]][pos[1]] == null)
 			throw new NoPieceException();
+		
+		if(piecesBoard[pos[0]][pos[1]].isWhite() != isWhitesTurn)
+			throw new NotYourTurnException();
 		
 		if(piecesBoard[pos[0]][pos[1]].setPosition(newPos, piecesBoard)) {
 			piecesBoard[newPos[0]][newPos[1]] = piecesBoard[pos[0]][pos[1]];

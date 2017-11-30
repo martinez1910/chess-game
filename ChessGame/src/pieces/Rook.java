@@ -16,7 +16,6 @@ public class Rook extends Piece{
 		
 		if(pieceInNewPosition != null && pieceInNewPosition.isWhite() == this.isWhite()) //Piece of same colour in new position
 			return false;
-<<<<<<< HEAD
 
 		return isValidAndPathClear(position, newPosition, piecesBoard);
 	}
@@ -28,40 +27,6 @@ public class Rook extends Piece{
 		
 		//Check path taken
 		
-		if(position[0] == newPosition[0] && position[1] > newPosition[1]) //Left
-			for(int i = 1; i < position[1]-newPosition[1]; i++) {
-				if(piecesBoard[position[0]][position[1]-i] != null)
-					return false;
-			}
-		
-		else if(position[0] == newPosition[0]&& newPosition[1] > position[1]) //Right
-			for(int i = 1; i < newPosition[1] - position[1]; i++) {
-				if(piecesBoard[position[0]][position[1]+i] != null)
-					return false;
-			}
-		
-		else if(position[0] > newPosition[0] && position[1] == newPosition[1])//Up
-			for(int i = 1; i < position[0]-newPosition[0]; i++) {
-				if(piecesBoard[position[0]-i][position[1]] != null)
-					return false;
-			}
-		
-		else if(newPosition[0] > position[0] && position[1] == newPosition[1])//Down
-			for(int i = 1; i < newPosition[0]-position[0]; i++) {
-				if(piecesBoard[position[0]+i][position[1]] != null)
-					return false;
-			}
-		return true;
-=======
-		
-		if((position[0] == newPosition[0] && Math.abs(position[1]-newPosition[1]) > 0 || Math.abs(position[0]-newPosition[0]) > 0 && position[1] == newPosition[1]) && isPathClear(position, newPosition, piecesBoard)) //Left, right and up, down movements
-			return true;
-
-		return false;
->>>>>>> branch 'master' of https://github.com/martinez1910/chess-game.git
-	}
-
-	private boolean isPathClear(int[] position, int[] newPosition, Piece[][] piecesBoard) {
 		if(position[0] == newPosition[0] && position[1] > newPosition[1]) //Left
 			for(int i = 1; i < position[1]-newPosition[1]; i++) {
 				if(piecesBoard[position[0]][position[1]-i] != null)
