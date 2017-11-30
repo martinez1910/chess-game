@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import exceptions.InvalidMovementException;
 import exceptions.NoPieceException;
+import exceptions.NotYourTurnException;
 import exceptions.PositionOutOfTheBoardException;
 import pieces.Board;
 
@@ -25,7 +26,7 @@ public class Main {
 			String str = readLine();
 			try {
 				board.movePiece(str);
-			} catch (PositionOutOfTheBoardException | NoPieceException | InvalidMovementException e) {
+			} catch (PositionOutOfTheBoardException | NoPieceException | InvalidMovementException | NotYourTurnException e) {
 				System.out.println(e.getMessage());
 			}
 			board.print();

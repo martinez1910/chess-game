@@ -1,5 +1,7 @@
 package pieces;
 
+import java.util.Arrays;
+
 public class Queen extends Piece{
 
 	
@@ -11,8 +13,11 @@ public class Queen extends Piece{
 
 	@Override
 	boolean isNewPositionValid(int[] newPosition, Piece[][] piecesBoard) {
-		// TODO Auto-generated method stub
-		return false;
+		int[] position = getPosition();
+		Piece pieceInNewPosition = piecesBoard[newPosition[0]][newPosition[1]];
+		if(pieceInNewPosition != null && pieceInNewPosition.isWhite() == this.isWhite()) //Piece of same colour in new position
+			return false;
+		
+		return Rook.isValidAndPathClear(position, newPosition, piecesBoard) || Bishop.isValidAndPathClear(position, newPosition, piecesBoard);
 	}
-
 }

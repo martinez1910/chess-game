@@ -2,6 +2,7 @@ package pieces;
 
 import exceptions.InvalidMovementException;
 import exceptions.NoPieceException;
+import exceptions.NotYourTurnException;
 import exceptions.PositionOutOfTheBoardException;
 
 public class Board {
@@ -11,6 +12,7 @@ public class Board {
 	
 	private Tile[][] emptyBoard = new Tile[8][8];
 	private Piece[][] piecesBoard = new Piece[8][8];
+	private boolean isWhitesTurn = true;
 	
 	public static void main(String[] args) {
 		new Board();
@@ -93,7 +95,7 @@ public class Board {
 	
 	
 	//Called from main. "X#X#".Returns if moved
-	public void movePiece(String str) throws PositionOutOfTheBoardException, NoPieceException, InvalidMovementException {
+	public void movePiece(String str) throws PositionOutOfTheBoardException, NoPieceException, InvalidMovementException, NotYourTurnException {
 		//ADD CONTROL LINES TO CHECK STRING IS CORRECT
 		str = str.toLowerCase();
 		int[] pos = translatePos(str.substring(0, 2));
@@ -102,12 +104,16 @@ public class Board {
 		if(pos == null || newPos == null)
 			throw new PositionOutOfTheBoardException();
 		
+		if(pos != null && ! (piecesBoard[pos[0]][pos[1]].isWhite() == isWhitesTurn))
+			throw new NotYourTurnException();
+		
 		if(piecesBoard[pos[0]][pos[1]] == null)
 			throw new NoPieceException();
 		
 		if(piecesBoard[pos[0]][pos[1]].setPosition(newPos, piecesBoard)) {
 			piecesBoard[newPos[0]][newPos[1]] = piecesBoard[pos[0]][pos[1]];
-			piecesBoard[pos[0]][pos[1]] = null;			
+			piecesBoard[pos[0]][pos[1]] = null;		
+			isWhitesTurn = !isWhitesTurn;
 		}
 		else
 			throw new InvalidMovementException();

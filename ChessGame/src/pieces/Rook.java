@@ -16,14 +16,17 @@ public class Rook extends Piece{
 		
 		if(pieceInNewPosition != null && pieceInNewPosition.isWhite() == this.isWhite()) //Piece of same colour in new position
 			return false;
-		
-		if((position[0] == newPosition[0] && Math.abs(position[1]-newPosition[1]) > 0 || Math.abs(position[0]-newPosition[0]) > 0 && position[1] == newPosition[1]) && isPathClear(position, newPosition, piecesBoard)) //Left, right and up, down movements
-			return true;
 
-		return false;
+		return isValidAndPathClear(position, newPosition, piecesBoard);
 	}
 
-	private boolean isPathClear(int[] position, int[] newPosition, Piece[][] piecesBoard) {
+	static boolean isValidAndPathClear(int[] position, int[] newPosition, Piece[][] piecesBoard) {
+		//Check movement valid
+		if(!(position[0] == newPosition[0] && Math.abs(position[1]-newPosition[1]) > 0 || Math.abs(position[0]-newPosition[0]) > 0 && position[1] == newPosition[1]))  //Left, right and up, down movements)
+			return false;
+		
+		//Check path taken
+		
 		if(position[0] == newPosition[0] && position[1] > newPosition[1]) //Left
 			for(int i = 1; i < position[1]-newPosition[1]; i++) {
 				if(piecesBoard[position[0]][position[1]-i] != null)

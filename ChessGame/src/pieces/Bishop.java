@@ -18,14 +18,15 @@ public class Bishop extends Piece{
 		
 		if(pieceInNewPosition != null && pieceInNewPosition.isWhite() == this.isWhite())//Piece of same colour in new position
 			return false;
-		
-		if(Math.abs(position[0] - newPosition[0]) == Math.abs(position[1] - newPosition[1]) && isPathClear(position, newPosition, piecesBoard))
-			return true;
-		
-		return false;
+
+		return isValidAndPathClear(position, newPosition, piecesBoard);
 	}
 
-	private boolean isPathClear(int[] position, int[] newPosition, Piece[][] piecesBoard) {
+	static boolean isValidAndPathClear(int[] position, int[] newPosition, Piece[][] piecesBoard) {
+		//Check movement valid
+		if(!(Math.abs(position[0] - newPosition[0]) == Math.abs(position[1] - newPosition[1]))) //Diagonal (any)
+			return false;
+		
 		int[] pathPosition = position.clone();
 		
 		if(position[0] > newPosition[0] && position[1] > newPosition[1])//up-left diagonal
