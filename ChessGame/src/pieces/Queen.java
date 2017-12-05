@@ -1,7 +1,5 @@
 package pieces;
 
-import java.util.Arrays;
-
 public class Queen extends Piece{
 
 	

@@ -1,5 +1,7 @@
 package pieces;
 
+import exceptions.CheckException;
+import exceptions.CheckMateException;
 import exceptions.InvalidMovementException;
 import exceptions.NoPieceException;
 import exceptions.NotYourTurnException;
@@ -90,7 +92,7 @@ public class Board {
 	
 	
 	//Called from main. "X#X#".Returns if moved
-	public void movePiece(String str) throws PositionOutOfTheBoardException, NoPieceException, InvalidMovementException, NotYourTurnException {
+	public void movePiece(String str) throws PositionOutOfTheBoardException, NoPieceException, InvalidMovementException, NotYourTurnException, CheckMateException, CheckException {
 		//ADD CONTROL LINES TO CHECK STRING IS CORRECT
 		str = str.toLowerCase();
 		int[] pos = translatePos(str.substring(0, 2));
@@ -107,11 +109,47 @@ public class Board {
 		
 		if(piecesBoard[pos[0]][pos[1]].setPosition(newPos, piecesBoard)) {
 			piecesBoard[newPos[0]][newPos[1]] = piecesBoard[pos[0]][pos[1]];
-			piecesBoard[pos[0]][pos[1]] = null;		
+			piecesBoard[pos[0]][pos[1]] = null;	
+			
+			if(isCheckmate()) {
+				print();
+				if(isWhitesTurn) 
+					throw new CheckMateException("WHITE");
+				else
+					throw new CheckMateException("BLACK");
+			}		
+			
 			isWhitesTurn = !isWhitesTurn;
+			
+			if(isCheck(piecesBoard[newPos[0]][newPos[1]]))
+				throw new CheckException();
 		}
 		else
 			throw new InvalidMovementException();
+	
+	}
+	
+	private boolean isCheck(Piece piece) {
+		//Search opponent's king
+		Piece opponentKing = null;
+		for(int i = 0; i<piecesBoard.length; i++) 
+			for(int j = 0; j<piecesBoard.length; j++)
+				if(piecesBoard[i][j] != null && piecesBoard[i][j] instanceof King && piecesBoard[i][j].isWhite() != piece.isWhite())
+					opponentKing = piecesBoard[i][j];
+		if(piece.simulateSetPosition(opponentKing.getPosition(), piecesBoard))
+			return true;
+		return false;
+	}
+	
+	private boolean isCheckmate() {
+		for(int i = 0; i<piecesBoard.length; i++) 
+			for(int j = 0; j<piecesBoard.length; j++)
+				if(piecesBoard[i][j] != null && piecesBoard[i][j].isWhite() != isWhitesTurn)
+					for(int a = 0; a<piecesBoard.length; a++) 
+						for(int b = 0; b<piecesBoard.length; b++)
+							if(piecesBoard[i][j].simulateSetPosition(new int[] {a, b}, piecesBoard)) return false;
+							
+		return true;
 	}
 	
 	private int[] translatePos(String str) {

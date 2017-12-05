@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import exceptions.CheckException;
+import exceptions.CheckMateException;
 import exceptions.InvalidMovementException;
 import exceptions.NoPieceException;
 import exceptions.NotYourTurnException;
@@ -13,11 +15,11 @@ import pieces.Board;
 public class Main {
 
 	public static void main(String[] args) {
-		System.out.println("#########");
-		System.out.println("# CHESS #");
-		System.out.println("#########");
+		System.out.println(" #########");
+		System.out.println("## CHESS ##");
+		System.out.println(" #########");
 		System.out.println("\nPress ENTER to play the game.");
-		//readLine();
+		readLine();
 		
 		Board board = new Board();
 		
@@ -26,9 +28,13 @@ public class Main {
 			String str = readLine();
 			try {
 				board.movePiece(str);
-			} catch (PositionOutOfTheBoardException | NoPieceException | InvalidMovementException | NotYourTurnException e) {
+			} catch (PositionOutOfTheBoardException | NoPieceException | InvalidMovementException | NotYourTurnException | CheckException e) {
 				System.out.println(e.getMessage());
+			} catch (CheckMateException e) {
+				System.out.println(e.getMessage());
+				break;	
 			}
+			
 			board.print();
 		}
 	}
