@@ -107,7 +107,6 @@ public class Board {
 	/**
 	 * Main method used to move a piece.
 	 * @param str String that should match this regular expression: ([a-h]|[A-H])[1-8]([a-h]|[A-H])[1-8]
-	 * @throws PositionOutOfTheBoardException
 	 * @throws NoPieceException if there's no piece in any of the given positions
 	 * @throws InvalidMovementException if the piece cannot perform that movement
 	 * @throws NotYourTurnException if you are trying to move a piece when it's not that piece's turn
@@ -115,15 +114,12 @@ public class Board {
 	 * @throws CheckException if a 'check' situation is present after moving a piece
 	 * @throws InvalidCommandException if the command given by the user is wrongly defined
 	 */
-	public void movePiece(String str) throws PositionOutOfTheBoardException, NoPieceException, InvalidMovementException, NotYourTurnException, CheckmateException, CheckException, InvalidCommandException {
+	public void movePiece(String str) throws NoPieceException, InvalidMovementException, NotYourTurnException, CheckmateException, CheckException, InvalidCommandException {
 		if(!str.matches("([a-h]|[A-H])[1-8]([a-h]|[A-H])[1-8]")) 
 			throw new InvalidCommandException();
 		
 		int[] pos = translatePosition(str.substring(0, 2));
 		int[] newPos = translatePosition(str.substring(2, 4));
-		
-		if(pos == null || newPos == null) //WARNING: This condition is never met due to previous regexp. Eliminate 'default' cases in translatePosition() and PositionOutOfTheBoardException
-			throw new PositionOutOfTheBoardException();
 		
 		if(piecesBoard[pos[0]][pos[1]] == null)
 			throw new NoPieceException();
@@ -221,39 +217,34 @@ public class Board {
 			case 'h':
 				translation[1] = 7;
 				break;
-			default:
-				return null;
 		}
 		
 		switch(number) {
-		case '8':
-			translation[0] = 0;
-			break;
-		case '7':
-			translation[0] = 1;
-			break;
-		case '6':
-			translation[0] = 2;
-			break;
-		case '5':
-			translation[0] = 3;
-			break;
-		case '4':
-			translation[0] = 4;
-			break;
-		case '3':
-			translation[0] = 5;
-			break;
-		case '2':
-			translation[0] = 6;
-			break;
-		case '1':
-			translation[0] = 7;
-			break;
-		default:
-			return null;
+			case '8':
+				translation[0] = 0;
+				break;
+			case '7':
+				translation[0] = 1;
+				break;
+			case '6':
+				translation[0] = 2;
+				break;
+			case '5':
+				translation[0] = 3;
+				break;
+			case '4':
+				translation[0] = 4;
+				break;
+			case '3':
+				translation[0] = 5;
+				break;
+			case '2':
+				translation[0] = 6;
+				break;
+			case '1':
+				translation[0] = 7;
+				break;
 		}
-
 		
 		return translation;
 	}
