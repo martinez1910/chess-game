@@ -18,7 +18,8 @@ This Java project allows you to play chess inserting commands in order to move b
   - Implementation of the different types of pieces.
   
 ## Example
-The following code will be the console output when executing the program (including input from user) executing the ***Fool's Mate*** (*checkmate in the fewest possible number of moves from the start of the game*).
+The following code will be the console output when executing the program (including input from user) executing the ***Fool's Mate***.
+>In chess, Fool's Mate, also known as the "Two-Move Checkmate", is the checkmate in the fewest possible number of moves from the start of the game. This can be achieved only by Black, who can deliver checkmate on move 2 with the queen.
 
 ```
  #########
