@@ -4,14 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import exceptions.CheckException;
-import exceptions.CheckMateException;
-import exceptions.InvalidMovementException;
-import exceptions.NoPieceException;
-import exceptions.NotYourTurnException;
-import exceptions.PositionOutOfTheBoardException;
+import exceptions.*;
 import pieces.Board;
 
+/**
+ * Main class that executes the whole program.
+ * @author A. Martínez
+ * @version 1.0 05/12/2017
+ *
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -28,9 +29,9 @@ public class Main {
 			String str = readLine();
 			try {
 				board.movePiece(str);
-			} catch (PositionOutOfTheBoardException | NoPieceException | InvalidMovementException | NotYourTurnException | CheckException e) {
+			} catch (PositionOutOfTheBoardException | NoPieceException | InvalidMovementException | NotYourTurnException | CheckException | InvalidCommandException e) {
 				System.out.println(e.getMessage());
-			} catch (CheckMateException e) {
+			} catch (CheckmateException e) {
 				System.out.println(e.getMessage());
 				break;	
 			}
@@ -40,14 +41,16 @@ public class Main {
 	}
 	
 	
-	
+	/**
+	 * Reads the line written by the user.
+	 * @return String written by the user.
+	 */
 	private static String readLine() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String s = null;
 		try {
 			s = br.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return s;

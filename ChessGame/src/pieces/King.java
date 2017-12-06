@@ -1,12 +1,20 @@
 package pieces;
 
-public class King extends Piece{
+/**
+ * Class representing the king piece.
+ * @author A. Martínez
+ * @version 1.0 05/12/2017
+ *
+ */
+class King extends Piece{
 
-	
-
-	public King(boolean isWhite, int[] position) {
+	/**
+	 * Main constructor. Automatically selects the Unicode symbol depending on the colour.
+	 * @param isWhite Colour of the piece
+	 * @param position Position of the piece in 'array notation'
+	 */
+	King(boolean isWhite, int[] position) {
 		super(isWhite, position, isWhite ? "\u2654" : "\u265A");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -25,6 +33,12 @@ public class King extends Piece{
 	}
 	
 	
+	/**
+	 * Returns if the new position is a 'check' one (illegal move).
+	 * @param position New position of the piece in 'array notation'
+	 * @param piecesBoard Matrix of the board containing all the pieces
+	 * @return 'true' if the position is a 'check' one, 'false' otherwise.
+	 */
 	private boolean isPositionCheck(int[] position, Piece[][] piecesBoard) {
 		for(int i = 0; i<piecesBoard.length; i++) 
 			for(int j = 0; j<piecesBoard.length; j++) {

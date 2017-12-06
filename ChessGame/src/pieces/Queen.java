@@ -1,12 +1,20 @@
 package pieces;
 
-public class Queen extends Piece{
+/**
+ * Class representing the queen piece.
+ * @author A. Martínez
+ * @version 1.0 05/12/2017
+ *
+ */
+class Queen extends Piece{	
 
-	
-
-	public Queen(boolean isWhite, int[] position) {
+	/**
+	 * Main constructor. Automatically selects the Unicode symbol depending on the colour.
+	 * @param isWhite Colour of the piece
+	 * @param position Position of the piece in 'array notation'
+	 */
+	Queen(boolean isWhite, int[] position) {
 		super(isWhite, position, isWhite ? "\u2655" : "\u265B");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

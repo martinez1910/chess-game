@@ -1,14 +1,21 @@
 package pieces;
 
-import exceptions.CheckException;
-import exceptions.CheckMateException;
-import exceptions.InvalidMovementException;
-import exceptions.NoPieceException;
-import exceptions.NotYourTurnException;
-import exceptions.PositionOutOfTheBoardException;
+import exceptions.*;
 
+/**
+ * Class representing the board.
+ * @author A. Martínez
+ * @version 1.0 05/12/2017
+ *
+ */
 public class Board {
-	public enum Tile{
+	/**
+	 * Enumeration representing board tiles (black ones and white ones).
+	 * @author A. Martínez
+	 * @version 1.0 05/12/2017
+	 *
+	 */
+	private enum Tile{
 		WHITE, BLACK
 	} 
 	
@@ -16,40 +23,46 @@ public class Board {
 	private Piece[][] piecesBoard = new Piece[8][8];
 	private boolean isWhitesTurn = true;
 	
+	/**
+	 * Main constructor that creates the board with the pieces and prints it.
+	 */
 	public Board() {
-		//System.out.println("Loading Board...");
 		this.emptyBoard = createEmptyBoard();
-		//print();
-		//System.out.println("Loading Pieces...");
 		this.piecesBoard = createPiecesBoard();
 		print();
 	}
 		
-	
+	/**
+	 * Returns a board (matrix) of Tiles.
+	 * @return Tile[][] matrix of Tiles
+	 * @see Tile
+	 */
 	private Tile[][] createEmptyBoard() {
 		Tile[][] emptyBoard = new Tile[8][8];
 		
 		boolean isWhite = true;
 		for(int i=0; i<emptyBoard.length; i++) {
-			for(int j=0; j<emptyBoard.length; j++) {
+			for(int j=0; j<emptyBoard.length; j++)				
 				if(isWhite){
 					emptyBoard[i][j] = Tile.WHITE;
 					isWhite = false;
-				}
-				else {
+				}else {
 					emptyBoard[i][j] = Tile.BLACK;
 					isWhite = true;
 				}
-			}
-			if(isWhite) isWhite = false;
-			else isWhite= true;
-		}
 			
+			isWhite = isWhite ? false : true;
+		}			
 		
 		return emptyBoard;
 	}
 	
 	
+	/**
+	 * Returns a board (matrix) of Pieces.
+	 * @return Piece[][] matrix of Pieces
+	 * @see Piece
+	 */
 	private Piece[][] createPiecesBoard() {
 		Piece[][] piecesBoard = new Piece[8][8];
 		
@@ -65,7 +78,7 @@ public class Board {
 				}
 		}
 		
-		//Non-pawns Black
+		//Black non-pawns
 		piecesBoard[0][0] = new Rook(false, new int[] {0,0});
 		piecesBoard[0][1] = new Knight(false, new int[] {0,1});
 		piecesBoard[0][2] = new Bishop(false, new int[] {0,2});
@@ -75,7 +88,7 @@ public class Board {
 		piecesBoard[0][6] = new Knight(false, new int[] {0,6});
 		piecesBoard[0][7] = new Rook(false, new int[] {0,7});
 			
-		//Non-pawns White
+		//White non-pawns
 		piecesBoard[7][0] = new Rook(true, new int[] {7,0});
 		piecesBoard[7][1] = new Knight(true, new int[] {7,1});
 		piecesBoard[7][2] = new Bishop(true, new int[] {7,2});
@@ -91,14 +104,25 @@ public class Board {
 	
 	
 	
-	//Called from main. "X#X#".Returns if moved
-	public void movePiece(String str) throws PositionOutOfTheBoardException, NoPieceException, InvalidMovementException, NotYourTurnException, CheckMateException, CheckException {
-		//ADD CONTROL LINES TO CHECK STRING IS CORRECT
-		str = str.toLowerCase();
-		int[] pos = translatePos(str.substring(0, 2));
-		int[] newPos = translatePos(str.substring(2, 4));
+	/**
+	 * Main method used to move a piece.
+	 * @param str String that should match this regular expression: ([a-h]|[A-H])[1-8]([a-h]|[A-H])[1-8]
+	 * @throws PositionOutOfTheBoardException
+	 * @throws NoPieceException if there's no piece in any of the given positions
+	 * @throws InvalidMovementException if the piece cannot perform that movement
+	 * @throws NotYourTurnException if you are trying to move a piece when it's not that piece's turn
+	 * @throws CheckmateException if a 'checkmate' situation is present after moving a piece so the game ends
+	 * @throws CheckException if a 'check' situation is present after moving a piece
+	 * @throws InvalidCommandException if the command given by the user is wrongly defined
+	 */
+	public void movePiece(String str) throws PositionOutOfTheBoardException, NoPieceException, InvalidMovementException, NotYourTurnException, CheckmateException, CheckException, InvalidCommandException {
+		if(!str.matches("([a-h]|[A-H])[1-8]([a-h]|[A-H])[1-8]")) 
+			throw new InvalidCommandException();
 		
-		if(pos == null || newPos == null)
+		int[] pos = translatePosition(str.substring(0, 2));
+		int[] newPos = translatePosition(str.substring(2, 4));
+		
+		if(pos == null || newPos == null) //WARNING: This condition is never met due to previous regexp. Eliminate 'default' cases in translatePosition() and PositionOutOfTheBoardException
 			throw new PositionOutOfTheBoardException();
 		
 		if(piecesBoard[pos[0]][pos[1]] == null)
@@ -114,9 +138,9 @@ public class Board {
 			if(isCheckmate()) {
 				print();
 				if(isWhitesTurn) 
-					throw new CheckMateException("WHITE");
+					throw new CheckmateException("WHITE");
 				else
-					throw new CheckMateException("BLACK");
+					throw new CheckmateException("BLACK");
 			}		
 			
 			isWhitesTurn = !isWhitesTurn;
@@ -129,6 +153,11 @@ public class Board {
 	
 	}
 	
+	/**
+	 * Returns if the moved piece makes the opponent's king to be 'in check'.
+	 * @param piece Moved piece
+	 * @return 'true' if 'in check', 'false' otherwise
+	 */
 	private boolean isCheck(Piece piece) {
 		//Search opponent's king
 		Piece opponentKing = null;
@@ -141,6 +170,10 @@ public class Board {
 		return false;
 	}
 	
+	/**
+	 * Returns if there is a 'checkmate' situation so the game ends.
+	 * @return 'ture' if 'checkmate', 'false' otherwise
+	 */
 	private boolean isCheckmate() {
 		for(int i = 0; i<piecesBoard.length; i++) 
 			for(int j = 0; j<piecesBoard.length; j++)
@@ -152,7 +185,13 @@ public class Board {
 		return true;
 	}
 	
-	private int[] translatePos(String str) {
+	/**
+	 * Translate the string given by the user to 'array notation' that is used internally. Should be invoked twice, one with each half of the string (current position and new position)
+	 * @param str Command given by the user
+	 * @return int[] Array with first integer being vertical coordinate and second one being the horizontal.
+	 */
+	private int[] translatePosition(String str) {
+		str = str.toLowerCase();
 		int[] translation = new int[2];
 		char letter = str.charAt(0);
 		char number = str.charAt(1);
@@ -220,6 +259,7 @@ public class Board {
 	}
 
 
+	@Override
 	public String toString() {
 		String str = "#########################################################################";//frame
 		for(int i=0; i<emptyBoard.length; i++) {
@@ -239,6 +279,9 @@ public class Board {
 		return str;
 	}
 		
+	/**
+	 * Prints the board formated with frame and reference letters and numbers.
+	 */
 	public void print() {
 		System.out.println(toString());
 	}

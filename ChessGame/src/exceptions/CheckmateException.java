@@ -1,10 +1,16 @@
 package exceptions;
 
-public class CheckMateException extends Exception {
+/**
+ * Exception used when a piece is 'in checkmate'.
+ * @author A. Martínez
+ * @version 1.0 05/12/2017
+ *
+ */
+public class CheckmateException extends Exception {
 
 	String winner;
 	
-	public CheckMateException(String winner) {
+	public CheckmateException(String winner) {
 		this.winner = winner;
 	}
 	

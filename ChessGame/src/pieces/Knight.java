@@ -1,12 +1,20 @@
 package pieces;
 
-public class Knight extends Piece{
-
+/**
+ * Class representing the knight piece.
+ * @author A. Martínez
+ * @version 1.0 05/12/2017
+ *
+ */
+class Knight extends Piece{
 	
-
-	public Knight(boolean isWhite, int[] position) {
+	/**
+	 * Main constructor. Automatically selects the Unicode symbol depending on the colour.
+	 * @param isWhite Colour of the piece
+	 * @param position Position of the piece in 'array notation'
+	 */
+	Knight(boolean isWhite, int[] position) {
 		super(isWhite, position, isWhite ? "\u2658" : "\u265E");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

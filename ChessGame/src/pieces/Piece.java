@@ -2,31 +2,61 @@ package pieces;
 
 import java.util.Arrays;
 
-public abstract class Piece {
+/**
+ * Abstract class used by all the type of pieces.
+ * @author A. Martínez
+ * @version 1.0 05/12/2017
+ *
+ */
+abstract class Piece {
 	private boolean isWhite;
 	private int[] position;
 	private String unicodeSymbol;
 	
-	public Piece(boolean isWhite, int[] position, String unicodeSymbol) {
+	/**
+	 * Main constructor.
+	 * @param isWhite Colour of the piece
+	 * @param position Position of the piece in 'array notation'
+	 * @param unicodeSymbol Symbol of the piece in Unicode
+	 */
+	Piece(boolean isWhite, int[] position, String unicodeSymbol) {
 		this.isWhite = isWhite;
 		this.position = position;
 		this.unicodeSymbol = unicodeSymbol;
 	}
 	
-	public boolean isWhite() {
+	/**
+	 * Returns 'true' if the colour of the piece is white, 'false' otherwise. 
+	 * @return 'true' if the colour is white
+	 */
+	boolean isWhite() {
 		return this.isWhite;
 	}
 	
-	public int[] getPosition(){
+	/**
+	 * Returns the position of the piece in 'array notation'.
+	 * @return int[] with the position
+	 */
+	int[] getPosition(){
 		return this.position;
 	}
 	
-	public String getUnicodeSymbol() {
+	/**
+	 * Returns the code of the piece's Unicode symbol. Ranging between "\u2654" and "\u265F" ('white king' and 'black pawn'). 
+	 * @return String containing Unicode symbol.
+	 */
+	String getUnicodeSymbol() {
 		return this.unicodeSymbol;
 	}
 	
-	public boolean setPosition(int[] newPos, Piece[][] piecesBoard) {
-		if(Arrays.equals(position, newPos)) return false;//same position		
+	/**
+	 * Main method used to move a piece. Relies on isNewPositionValid() and leavesKingInCheck().
+	 * @param newPos The new position of the piece
+	 * @param piecesBoard Matrix of the board containing all the pieces
+	 * @return 'true' if it has been moved, 'false' otherwise
+	 */
+	boolean setPosition(int[] newPos, Piece[][] piecesBoard) {
+		if(Arrays.equals(position, newPos)) return false;	
 		
 		if(isNewPositionValid(newPos, piecesBoard) && !leavesKingInCheck(newPos, piecesBoard)) {
 			this.position = newPos;
@@ -35,9 +65,15 @@ public abstract class Piece {
 		return false;
 	}
 	
+	/**
+	 * Checks if by moving a piece it makes its king to be in a 'check' position (illegal move).
+	 * Calling isNewPositionValid() previously is a must.
+	 * @param newPos The new position of the piece that has been moved
+	 * @param piecesBoard The matrix of the board containing all the pieces.
+	 * @return 'true' if the king is 'in check' (illegal move), 'false' otherwise
+	 */
 	private boolean leavesKingInCheck(int[] newPos, Piece[][] piecesBoard) {
 		boolean result = false;
-		//Checking if by moving the piece we allow the opponent to 'check' us. 
 		//Temporary board with the valid movement.
 		Piece auxPiece1 = piecesBoard[newPos[0]][newPos[1]];
 		Piece auxPiece2 = piecesBoard[position[0]][position[1]];
@@ -64,8 +100,15 @@ public abstract class Piece {
 		return result;
 	}
 	
-	public boolean simulateSetPosition(int[] newPos, Piece[][] piecesBoard) {
-		if(Arrays.equals(position, newPos)) return false;//same position		
+	/**
+	 * Simulates moving a piece. Simulated version of setPosition() used while looking for a 'check' or 'checkmate' situation. Simulates moving a piece. 
+	 * Relies on isNewPositionValid() and leavesKingInCheck().
+	 * @param newPos The new position of the piece
+	 * @param piecesBoard The matrix of the board containing all the pieces
+	 * @return 'true' if it has been moved, 'false' otherwise
+	 */
+	boolean simulateSetPosition(int[] newPos, Piece[][] piecesBoard) {
+		if(Arrays.equals(position, newPos)) return false;		
 		
 		if(isNewPositionValid(newPos, piecesBoard) && !leavesKingInCheck(newPos, piecesBoard)) {
 			//this.position = newPos; //This commented line allows simulation
@@ -74,6 +117,12 @@ public abstract class Piece {
 		return false;
 	}
 
+	/**
+	 * Checks that the movement can be performed by the given type of piece.
+	 * @param newPosition The new position of the piece
+	 * @param piecesBoard The matrix of the board containing all the pieces
+	 * @return 'true' if the movement is valid, 'false' otherwise
+	 */
 	abstract boolean isNewPositionValid(int[] newPosition, Piece[][] piecesBoard);
 	
 }

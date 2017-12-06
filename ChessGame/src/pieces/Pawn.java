@@ -1,15 +1,26 @@
 package pieces;
 
-public class Pawn extends Piece{
+/**
+ * Class representing the pawn piece.
+ * @author A. Martínez
+ * @version 1.0 05/12/2017
+ *
+ */
+class Pawn extends Piece{
 
 	private boolean isFirstMove = true;
 
-	public Pawn(boolean isWhite, int[] position) {
+	/**
+	 * Main constructor. Automatically selects the Unicode symbol depending on the colour.
+	 * @param isWhite Colour of the piece
+	 * @param position Position of the piece in 'array notation'
+	 */
+	Pawn(boolean isWhite, int[] position) {
 		super(isWhite, position, isWhite ? "\u2659" : "\u265F");
-		// TODO Auto-generated constructor stub
 	}
 
-	@Override 
+	
+	@Override
 	boolean isNewPositionValid(int[] newPosition, Piece[][] piecesBoard) {
 		int[] position = getPosition();
 		Piece pieceInNewPosition = piecesBoard[newPosition[0]][newPosition[1]];
