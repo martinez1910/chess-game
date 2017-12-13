@@ -12,7 +12,7 @@ This Java project allows you to play chess inserting commands in order to move b
   - Different exceptions used by the program.
 - **./src/pieces/Piece.java**
   - Abstract class that will be extended by each of the different types of pieces.
-- **./src/logic/Board.java**
+- **./src/pieces/Board.java**
   - Implementation of the chess board.
 - **./src/pieces/*\[other\]*.java**
   - Implementation of the different types of pieces.
