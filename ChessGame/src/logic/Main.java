@@ -45,7 +45,7 @@ public class Main {
 	 * Reads the line written by the user.
 	 * @return String written by the user.
 	 */
-	private static String readLine() {
+	public static String readLine() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String s = null;
 		try {

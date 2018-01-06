@@ -1,11 +1,12 @@
 package pieces;
 
 import exceptions.*;
+import logic.Main;
 
 /**
  * Class representing the board.
  * @author A. Martínez
- * @version 1.0 05/12/2017
+ * @version 1.1 06/01/2018
  *
  */
 public class Board {
@@ -131,6 +132,10 @@ public class Board {
 			piecesBoard[newPos[0]][newPos[1]] = piecesBoard[pos[0]][pos[1]];
 			piecesBoard[pos[0]][pos[1]] = null;	
 			
+			if(isPromotion(piecesBoard[newPos[0]][newPos[1]])) {
+				handlePromotion(newPos);
+			}
+			
 			if(isCheckmate()) {
 				print();
 				if(isWhitesTurn) 
@@ -143,12 +148,14 @@ public class Board {
 			
 			if(isCheck(piecesBoard[newPos[0]][newPos[1]]))
 				throw new CheckException();
+			
 		}
 		else
 			throw new InvalidMovementException();
 	
 	}
 	
+
 	/**
 	 * Returns if the moved piece makes the opponent's king to be 'in check'.
 	 * @param piece Moved piece
@@ -179,6 +186,67 @@ public class Board {
 							if(piecesBoard[i][j].simulateSetPosition(new int[] {a, b}, piecesBoard)) return false;
 							
 		return true;
+	}
+	
+	/**
+	 * Returns if there is a 'promotion' situation.
+	 * @param piece Moved piece
+	 * @return 'true' if a pawn 'in promotion', 'false' otherwise.
+	 */
+	private boolean isPromotion(Piece piece) {
+		int[] piecePos = piece.getPosition();
+		if(piece instanceof Pawn) {
+			if(piece.isWhite() && piecePos[0] == 0)
+				return true;			
+			if(!piece.isWhite() && piecePos[0] == 7)
+				return true;
+		}		
+		return false;
+	}
+	
+	/**
+	 * Handles a 'promotion' situation. Asks the user the piece to replace the promoted pawn and sets it into the board.
+	 * @param position Position of the pawn to be promoted in the board.
+	 */
+	private void handlePromotion(int[] position) {
+		String str = "You have reached the 8th rank with a pawn, please select one of the followings:";
+		str += "\n 1 - Queen";
+		str += "\n 2 - Knight";
+		str += "\n 3 - Rook";
+		str += "\n 4 - Bishop";
+		System.out.println(str);
+		
+		int number;		
+		do {
+			try {
+				number = Integer.parseInt(Main.readLine());
+			}catch(NumberFormatException e) { //handles wrong input from user
+				number = 0;
+			}
+			
+			switch(number) {
+			case 1:
+				piecesBoard[position[0]][position[1]] = new Queen(isWhitesTurn, new int[] {position[0],position[1]});
+				System.out.println("Queen selected.");
+				break;
+			case 2:
+				piecesBoard[position[0]][position[1]] = new Knight(isWhitesTurn, new int[] {position[0],position[1]});
+				System.out.println("Knight selected.");
+				break;
+			case 3:
+				piecesBoard[position[0]][position[1]] = new Rook(isWhitesTurn, new int[] {position[0],position[1]});
+				System.out.println("Rook selected.");
+				break;
+			case 4:
+				piecesBoard[position[0]][position[1]] = new Bishop(isWhitesTurn, new int[] {position[0],position[1]});
+				System.out.println("Bishop selected.");
+				break;
+			default: System.out.println("Wrong number. Please, introduce a number between 1 and 4.");
+			}
+			
+		}
+		while(number < 1 || number > 4);
+		
 	}
 	
 	/**
@@ -258,7 +326,7 @@ public class Board {
 			str += "\n#"; //frame
 			for(int j=0; j<emptyBoard.length; j++) {
 				if(piecesBoard[i][j] == null)
-					str += emptyBoard[i][j]==Tile.WHITE ? "\t\u25A1" : "\t\u25A0"; //Java console colours are inverted due to Eclipse black background.
+					str += emptyBoard[i][j]==Tile.WHITE ? "\t\u25A1" : "\t\u25A0"; //Java console colours are inverted due to IDE's black background.
 				else
 					str += "\t" +piecesBoard[i][j].getUnicodeSymbol();
 			}
