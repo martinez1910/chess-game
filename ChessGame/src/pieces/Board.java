@@ -157,19 +157,29 @@ public class Board {
 
 
 	/**
-	 * Returns if the moved piece makes the opponent's king to be 'in check'.
+	 * Returns if the moved piece or others make the opponent's king to be 'in check'.
 	 * @param piece Moved piece
 	 * @return 'true' if 'in check', 'false' otherwise
 	 */
 	private boolean isCheck(Piece piece) {
 		//Search opponent's king
 		Piece opponentKing = null;
+		outerLoop:
 		for(int i = 0; i<piecesBoard.length; i++) 
 			for(int j = 0; j<piecesBoard.length; j++)
-				if(piecesBoard[i][j] != null && piecesBoard[i][j] instanceof King && piecesBoard[i][j].isWhite() != piece.isWhite())
+				if(piecesBoard[i][j] != null && piecesBoard[i][j] instanceof King && piecesBoard[i][j].isWhite() != piece.isWhite()) {
 					opponentKing = piecesBoard[i][j];
+					break outerLoop;
+				}
+		
+		//This line is redundant with the following nested loop but preserved due to increased performance.
 		if(piece.simulateSetPosition(opponentKing.getPosition(), piecesBoard))
 			return true;
+		
+		for(int i = 0; i<piecesBoard.length; i++)
+			for(int j = 0; j<piecesBoard.length; j++)
+				if(piecesBoard[i][j] != null && piecesBoard[i][j].isWhite() == piece.isWhite() && piecesBoard[i][j].simulateSetPosition(opponentKing.getPosition(), piecesBoard))
+					return true;
 		return false;
 	}
 	

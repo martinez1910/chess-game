@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * Abstract class used by all the type of pieces.
  * @author A. Martínez
- * @version 1.0 05/12/2017
+ * @version 1.1 27/01/2017
  *
  */
 abstract class Piece {
