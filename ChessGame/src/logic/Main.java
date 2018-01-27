@@ -29,7 +29,7 @@ public class Main {
 			String str = readLine();
 			try {
 				board.movePiece(str);
-			} catch (NoPieceException | InvalidMovementException | NotYourTurnException | CheckException | InvalidCommandException e) {
+			} catch (NoPieceException | InvalidMovementException | NotYourTurnException | InvalidCommandException e) {
 				System.out.println(e.getMessage());
 			} catch (CheckmateException e) {
 				System.out.println(e.getMessage());

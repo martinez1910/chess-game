@@ -6,7 +6,7 @@ import logic.Main;
 /**
  * Class representing the board.
  * @author A. Martínez
- * @version 1.1 06/01/2018
+ * @version 1.1 27/01/2018
  *
  */
 public class Board {
@@ -112,10 +112,9 @@ public class Board {
 	 * @throws InvalidMovementException if the piece cannot perform that movement
 	 * @throws NotYourTurnException if you are trying to move a piece when it's not that piece's turn
 	 * @throws CheckmateException if a 'checkmate' situation is present after moving a piece so the game ends
-	 * @throws CheckException if a 'check' situation is present after moving a piece
 	 * @throws InvalidCommandException if the command given by the user is wrongly defined
 	 */
-	public void movePiece(String str) throws NoPieceException, InvalidMovementException, NotYourTurnException, CheckmateException, CheckException, InvalidCommandException {
+	public void movePiece(String str) throws NoPieceException, InvalidMovementException, NotYourTurnException, CheckmateException, InvalidCommandException {
 		if(!str.matches("([a-h]|[A-H])[1-8]([a-h]|[A-H])[1-8]")) 
 			throw new InvalidCommandException();
 		
@@ -144,10 +143,10 @@ public class Board {
 					throw new CheckmateException("BLACK");
 			}		
 			
-			isWhitesTurn = !isWhitesTurn;
-			
 			if(isCheck(piecesBoard[newPos[0]][newPos[1]]))
-				throw new CheckException();
+				handleCheck();
+			
+			isWhitesTurn = !isWhitesTurn;
 			
 		}
 		else
@@ -155,6 +154,7 @@ public class Board {
 	
 	}
 	
+
 
 	/**
 	 * Returns if the moved piece makes the opponent's king to be 'in check'.
@@ -171,6 +171,16 @@ public class Board {
 		if(piece.simulateSetPosition(opponentKing.getPosition(), piecesBoard))
 			return true;
 		return false;
+	}
+	
+	/**
+	 * Handles a 'check' situation. Prints a message to the user informing about this.
+	 */
+	private void handleCheck() {
+		String str =  " #########";
+		str += "\n## CHECK ##";
+		str += "\n #########";
+		System.out.println(str);		
 	}
 	
 	/**
