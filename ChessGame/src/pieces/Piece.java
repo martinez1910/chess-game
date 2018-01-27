@@ -81,18 +81,24 @@ abstract class Piece {
 		piecesBoard[position[0]][position[1]] = null;
 		
 		//Search own king
-		Piece ownKing = null;
+		int[] ownKingPosition = null;
+		outerLoop:
 		for(int i = 0; i<piecesBoard.length; i++) 
 			for(int j = 0; j<piecesBoard.length; j++)
-				if(piecesBoard[i][j] != null && piecesBoard[i][j] instanceof King && piecesBoard[i][j].isWhite == this.isWhite)
-					ownKing = piecesBoard[i][j];
+				if(piecesBoard[i][j] != null && piecesBoard[i][j] instanceof King && piecesBoard[i][j].isWhite == this.isWhite) {
+					ownKingPosition = new int[] {i,j};
+					break outerLoop;
+				}					
 					
 		//Check no enemy valid movement to king's position
+		outerLoop:
 		for(int i = 0; i<piecesBoard.length; i++) 
 			for(int j = 0; j<piecesBoard.length; j++) {
 				Piece piece = piecesBoard[i][j];
-				if(piece != null && piece.isWhite() != this.isWhite() && piece.isNewPositionValid(ownKing.position, piecesBoard))
-					result = true;					
+				if(piece != null && piece.isWhite() != this.isWhite() && piece.isNewPositionValid(ownKingPosition, piecesBoard)) {
+					result = true;
+					break outerLoop;
+				}								
 			}
 		piecesBoard[newPos[0]][newPos[1]] = auxPiece1;
 		piecesBoard[position[0]][position[1]] = auxPiece2;
